@@ -1,0 +1,68 @@
+Program waterPouring
+	{ mendapatkan air sebanyak 4L dari kendi A berkapasitas 3L dan kendi B berkapasitas 5L dengan aturan-aturan tertentu }
+KAMUS 
+		{ Variabel }
+			A, B : integer { banyaknya air yang terdapat di kendi A dan B }
+			opsi : integer { tindakan yang diambil }
+		{ Fungsi/Prosedur }
+			procedure fill(input : character x)
+				{ prosedur untuk mengisi kendi x }
+			procedure move(input : x,y character)
+				{ prosedur untuk memindahkan air dari kendi x ke kendi y }
+			procedure empty(input : character x)
+				{ prosedur untuk mengosongkan kendi x }
+ALGORITMA UTAMA 
+	{ Inisiasi nilai A dan B }
+	A <- 0
+	B <- 0
+
+while (B != 4) do
+	input(opsi)
+	if (opsi = 1) then
+		fill('A')
+	else if (opsi = 2) then
+		fill('B')
+	else if (opsi = 3) then
+		empty('A')
+	else if (opsi = 4) then
+		empty('B')
+	else if (opsi = 5) then
+		move('A','B')
+	else if (opsi = 6) then
+		move('B','A')
+	else
+		output("Opsi tidak tepat")
+
+
+REALISASI FUNGSI/PROSEDUR
+procedure fill(input : character x)
+	if x = 'A' then
+		A <- 3
+	else if x = 'B' then
+		B <- 5
+
+procedure move(input : x,y character)
+	if (x,y) = ('A','B') then
+		if A !=0 and B != 5 then
+			if  A > (5-B)  then
+				A <- A - (5-B)
+				B <- 5
+			else
+				B <- B + A
+				A <- 0
+		else
+			output("Aksi tidak bisa dilakukan")
+
+	else if (x,y) = ('B','A') then
+		if B != 0 and A != 3 then
+			if B > 3-A then
+				B <- B - (3-A)
+				A <- 3
+			else
+				A <- A + B
+				B <- 0
+procedure empty(x)
+	if x = 'A' then
+		A = 0
+	else if x = 'B' then
+		B = 0
