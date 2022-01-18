@@ -11,6 +11,10 @@ KAMUS
 				{ prosedur untuk memindahkan air dari kendi x ke kendi y }
 			procedure empty(input : character x)
 				{ prosedur untuk mengosongkan kendi x }
+			procedure list_opsi()
+            			{ prosedur untuk menampilkan opsi yang bisa dilakukan pengguna }
+        		procedure opening()
+            			{ menampilkan pesan awal }
 ALGORITMA UTAMA 
 	{ Inisiasi nilai A dan B }
 	A <- 0
