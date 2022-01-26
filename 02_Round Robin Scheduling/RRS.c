@@ -34,7 +34,7 @@
 
 	// deklarasi konstanta
 const int EMPTY = 9999;
-const int timeLimit = 99;
+const int timeLimit = 9999;
 #define maxSize 13
 
 	// deklarasi variabel dan prosedur
@@ -110,30 +110,34 @@ int isInArray(int i, int arri[maxSize])
 }
 
 void cetakAntrian(int antrian[maxSize],int x, int y)
-{
+{	
 	// KAMUS LOKAL
 		// Variabel
 			// index : integer
 	// ALGORITMA
+
+		// x -> menyatakan posisi awal dari elemen ber-indeks 0 dari array antrian
+		// y -> menyatakan banyaknya elemen di akhir cetakAntrian yang tidak diikutkan
+
 	for (int k = 0;k<(nProses-y);k++)
 	//for (int k = 0;k<nProses;k++)
 	{
-			// debug : harus ada proses pengecekan apakah antrian sudah ada atau belum,
-			// kalau tidak dicek, maka akan ditampilkan P9999
+		if (nProses != y)
+		{
+			int index = (k+x) % (nProses-y);
+
+			if (antrian[index] != EMPTY)
+			{
+				printf("P%d",antrian[index]);
+
+			}
+
+			if (k != nProses-1) // mencetak spasi untuk elemen bukan terakhir
+			{
+				printf(" ");
+			}
+		}
 		
-		int index = (k+x) % (nProses-y);
-		if (antrian[index] != EMPTY)
-		{
-			//printf("P%d",antrian[index]);
-				// debug
-			printf("P%d",antrian[index]);
-
-		}
-
-		if (k != nProses-1) // mencetak spasi untuk elemen bukan terakhir
-		{
-			printf(" ");
-		}
 	}
 	// x sebagai offset, misalkan kita ingin mencetak elemen dengan index 2,3,4,0, dan 1. maka n = 5 dan x = 2
 	// y sebagai jumlah elemen antrian yang tidak perlu dicetak lagi
@@ -158,8 +162,7 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 			// telahProses : array[0..n-1] of integer
 				// lama waktu yang telah berlangsung untuk masing-masing proses
 			// waktu : integer
-			// waktupast : integer
-				// waktu terakhir kali mencapai kuantum waktu
+			// lastInterrupt: integer { terakhir kali tabel ganttChart dicetak }
 			// readyqueue : array [0..n-1] of integer
 				// array yang menyatakan proses yang telah selesai dijalankan
 			// indexreadyqueue : integer
@@ -177,7 +180,7 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 	int telahProses[maxSize];
 	int readyqueue[maxSize];
 	int waktu = 0; 
-	int waktupast = 0;
+	int lastInterrupt = 0;
 	int indexreadyqueue = 0;
 	int indexantrian = 0;
 
@@ -189,9 +192,9 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 	}
 
 		// mencetak Gantt-chart
-	printf("Waktu\tAntrian\t\t\t\t\tSelesai\n");
+	printf("Waktu\tAntrian\t\t\tSelesai\n");
 
-	while (indexreadyqueue <= nProses && waktu < timeLimit) // terus lakukan sampai semua proses telah dijalankan
+	while (indexreadyqueue < nProses && waktu < timeLimit) // terus lakukan sampai semua proses telah dijalankan
 	{
 		// ada proses yang masuk ke queue
 		for (int k = 0;k<nProses;k++)
@@ -206,11 +209,11 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 
 		// mengubah first ke index elemen yang akan diproses
 			// perubahan terjadi ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan
-		if ((waktu - waktupast == tKuantum) || (telahProses[first] == waktuEksekusi[first]))
+		if ((waktu - lastInterrupt >= tKuantum) || (telahProses[first] == waktuEksekusi[first]))
 		{
 			first = (first+1) % (nProses-indexreadyqueue);
 			last =  (last+1) % (nProses-indexreadyqueue);
-			waktupast = waktu;
+			lastInterrupt = waktu;
 		}
 
 		// mengurusi proses yang telah SELESAI dijalankan
@@ -222,22 +225,22 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 
 		// mencetak baris baru dalam Gantt-chart
 			// pencetakan baris akan dilakukan apabila ada proses yang selesai, ada proses yang datang, atau waktu telah mencapai kuantum waktu
-		if ((waktu - waktupast == tKuantum) || (indexreadyqueue == nProses) || (isInArray(waktu,waktuKedatangan) == 1))
+		if ((waktu - lastInterrupt >= tKuantum) || (indexreadyqueue == nProses) || (isInArray(waktu,waktuKedatangan) == 1))
 		{
 			printf("%d\t",waktu);
 			cetakAntrian(antrian,first,indexreadyqueue);
-			printf("%d\t");
+			printf("\t\t\t");
 			
-			if (readyqueue[0] != EMPTY)
+			if (readyqueue[0] != EMPTY) // jika sudah ada proses yang selesai
 			{
 				for (int k = 0;k<nProses;k++)
 				{
 					if (readyqueue[k] != EMPTY)
 					{
-						printf("P%d ",readyqueue[k]);
+						printf("P%d",readyqueue[k]);
 						if (k != nProses-1)
 						{
-							printf(", ");
+							printf(",");
 						}
 					}
 				}
