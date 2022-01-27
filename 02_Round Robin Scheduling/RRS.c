@@ -28,10 +28,27 @@
 			// realisasi algoritma RRS dan mencetaknya dalam bentuk Gantt-chart
 		// function isInArray(integer i, array[0..n-1] of integer arri) -> boolean
 			// mengembalikan true bila n terdapat di arri
-		// procedure cetakAntrian(input antrian: array[0..n-1] of integer, x, y : integer)
+		// procedure cetakAntrian(input antrian: array[0..n-1] of integer)
 			// mencetak P{k} dari array of integer yang memiliki elemen k }
+		// function isAllEmpty(array[0..maxSize-1] of integer) -> boolean
+			// fungsi yang akan mengembalikan nilai true bila semua elemen pada array bernilai EMPTY
+		// function swapElement(array[0..maxSize-1] of integer; integer: a, b) -> arr [0..n-1] of integer
+			// fungsi untuk menukar 2 elemen pada sebuah array
+		// procedure geserSiklik(input arri: array[0..maxSize-1] of integer, x : integer ) 
+			// menggeser elemen pada suatu array ke kiri dengan bayangan array tersebut siklik (elemen pertama terhubung langsung)
+			// dengan element terakhir. x adalah banyaknya elemen array yang tak kosong.
+			// array akan dibuat dipepet ke kiri, artinya tidak ada elemen kosong yang berindeks
+			// lebih kecil dari elemen tak kosong. asumsi awal array sudah pepet kiri
+		// procedure removeElement(input arri : array[0..maxSize-1] of integer, indexRemove)
+			// menghapus elemen dari suatu array of integer dan menggantikannya dengan sebuah
+			// nilai yang ditetapkan sebagai EMPTY. Array hasil sedemikian rupa sehingga tidak ada
+			// EMPTY di tengah-tengah elemen non-EMPTY
+		// function minArray(int arri[0..maxSize-1]) -> integer
+			// mencari nilai minimum dari suatu array of integer
+
 // ALGORITMA UTAMA
 #include <stdio.h>
+#include <stdbool.h>
 
 	// deklarasi konstanta
 const int EMPTY = 9999;
@@ -45,9 +62,10 @@ int nProses;
 int tKuantum;
 
 void cetakTimeProcessTable(int waktuKedatangan[], int waktuEksekusi[]);
-int isInArray(int i, int arri[]); 
-void cetakAntrian(int antrian[],int x, int y);
+bool isInArray(int i, int arri[]); 
+void cetakAntrian(int antrian[]);
 void ganttChart(int waktuKedatangan[], int waktuEksekusi[]);
+bool isAllEmpty(int arri[]);
 
 int main()
 {
@@ -84,6 +102,79 @@ int main()
 }
 
 // REALISASI FUNGSI/PROSEDUR
+ 
+int minArray(int arri[maxSize])
+{
+	// KAMUS LOKAL
+		// Variabel
+			// min : integer { nilai minimum sementara }
+	// ALGORIMA
+	int min = arri[0]; // asumsikan tidak kosong
+
+	for (int k=1;k<maxSize;k++)
+	{
+		if (arri[k] != EMPTY)
+		{
+			if (arri[k] < min)
+			{
+				min = arri[k];
+			}
+		}
+	}
+	return min;
+}
+
+void swapElement(int arri[maxSize],int a, int b)
+{
+	// KAMUS LOKAL	
+		// Variabel
+			// temp : integer { variabel sementara untuk swapping }
+	// ALGORITMA
+	int temp;
+	temp = arri[a];
+	arri[a] = arri[b];
+	arri[b] = temp;
+}
+
+void geserSiklik(int arri[maxSize], int x)
+{
+	// KAMUS LOKAL
+	// ALGORITMA
+		// langkah 1 : menggeser secara siklik
+	for (int k = 0;k<maxSize-1;k++)
+	{
+		swapElement(arri,k,k+1);
+	}
+		// langkah 2 : pepet ke kiri
+	swapElement(arri,x-1,maxSize-1);
+}
+
+void removeElement(int arri[maxSize], int indexRemove)
+{
+	// KAMUS LOKAL
+	// ALGORITMA 
+		// mengapungkan elemen yang mau dihapus ke ujung
+	for (int k = indexRemove;k<maxSize;k++)
+	{
+		swapElement(arri,k,k+1);
+	}
+		// menghapus elemen yang paling ujung
+	arri[maxSize] = EMPTY;
+}
+
+bool isAllEmpty(int arri[maxSize])
+{
+	// KAMUS LOKAL
+	// ALGORITMA
+	for (int k = 0;k<maxSize;k++)
+	{
+		if(arri[k] != EMPTY)
+		{
+			return false;
+		}
+	}
+	return true;
+}
 void cetakTimeProcessTable(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 {
 	// KAMUS LOKAL
@@ -96,7 +187,7 @@ void cetakTimeProcessTable(int waktuKedatangan[maxSize], int waktuEksekusi[maxSi
 	printf("\n");
 }
 
-int isInArray(int i, int arri[maxSize])
+bool isInArray(int i, int arri[maxSize])
 {
 	// KAMUS LOKAL
 	// ALGORITMA
@@ -104,82 +195,37 @@ int isInArray(int i, int arri[maxSize])
 	{
 		if (arri[k] == i)
 		{
-			return 1;
+			return true;
 		}
 	}
-	return 0;
+	return false;
 }
 
-void cetakAntrian(int antrian[maxSize],int x, int y)
-{	
-	// KAMUS LOKAL
-		// Variabel
-			// index : integer
-	// ALGORITMA
-
-	for (int k = 0;k<(nProses-y);k++)
+void cetakAntrian(int antrian[maxSize])
+{
+	for (int k = 0;k<nProses;k++)
 	{
-		if (nProses != y)
+		if (antrian[k] != EMPTY)
 		{
-			int index = (k+x) % (nProses-y);
-
-			if (antrian[index] != EMPTY)
-			{
-				printf("P%d",antrian[index]);
-
-			}
-
-			if (k != nProses-1) // mencetak spasi untuk elemen bukan terakhir
-			{
-				printf(" ");
-			}
+			printf("P%d",antrian[k]);
 		}
-		
+
+		if (antrian[k+1] != EMPTY)
+		{
+			printf(" "); // mencetak spasi bila belum mencapai ujung
+		}
 	}
-	// x -> menyatakan posisi awal dari elemen ber-indeks 0 dari array antrian
-	// y -> menyatakan banyaknya elemen di akhir antrian yang tidak diikutkan
-	// x sebagai offset, misalkan kita ingin mencetak elemen dengan index 2,3,4,0, dan 1. maka n = 5 dan x = 2
-	// y sebagai jumlah elemen antrian yang tidak perlu dicetak lagi
-
-	/* contoh :
-			misalkan antrian = {1,3,2,0,4} untuk y = 1 :
-		 untuk x = 0 -> akan tercetak : P1 P3 P2 P0 {P4}
-		 untuk x = 1 -> akan tercetak : P3 P2 P0 {P4} P1
-		 untuk x = 2 -> akan tercetak : P2 P0 {P4} P1 P3 
-		 	note : {} -> tidak dicetak
-	*/
-
 }
 
-//void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
-void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
+void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
 {
 	// KAMUS LOKAL
-		// Variabel
-			// antrian : array [0..n-1] of integer
-				// array atrian proses
-			// telahProses : array[0..n-1] of integer
-				// lama waktu yang telah berlangsung untuk masing-masing proses
-			// waktu : integer
-			// lastInterrupt: integer { terakhir kali tabel ganttChart dicetak }
-			// readyqueue : array [0..n-1] of integer
-				// array yang menyatakan proses yang telah selesai dijalankan
-			// indexreadyqueue : integer
-				// index pada array readyqueue yang akan digunakan juga ketika pencetakan elemen antrian
-			// first : integer
-				// indeks yang merujuk ke elemen pertama pada queue -> proses yang sedang dijalankan
-			// last : integer
-				//  indeks yang merujuk ke elemen terakhir pada queue -> proses yang terakhir dijalankan
-			// indexantrian : integer
 	// ALGORITMA
-		// Inisiasi nilai variabel
-	int first = 0;
-	int last = nProses-1;
 	int antrian[maxSize];
 	int telahProses[maxSize];
 	int readyqueue[maxSize];
 	int waktu = 0; 
-	int lastInterrupt = 0;
+	int lastInterrupt = minArray(waktuKedatangan);
 	int indexreadyqueue = 0;
 	int indexantrian = 0;
 
@@ -188,48 +234,95 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 		readyqueue[k] = EMPTY;
 		antrian[k] = EMPTY;
 		telahProses[k] = EMPTY;
-	}
+	}	
 
 		// mencetak Gantt-chart
 	printf("Waktu\tAntrian\t\t\tSelesai\n");
 
-	while (indexreadyqueue < nProses && waktu < timeLimit) // terus lakukan sampai semua proses telah dijalankan
+	//while(!(isAllEmpty(antrian)) && waktu < timeLimit)
+	while((indexreadyqueue < nProses)&& waktu < timeLimit)
 	{
 		// ada proses yang masuk ke queue
 			// ketika ada proses yang masuk ke queue, last harus bergeser
 		for (int k = 0;k<nProses;k++)
 		{
-			if (waktu == waktuKedatangan[k])
+			if (waktu == waktuKedatangan[k]) // elemen yang datang akan dipindahkan ke antrian index ke-nol
 			{
 				antrian[indexantrian]= k;
 				telahProses[indexantrian] = 0;
 				indexantrian++;
-				last = (last + 1) % (nProses-indexreadyqueue);
 			}
 		}
 
-		// mengubah first ke index elemen yang akan diproses
-			// perubahan terjadi ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan
-		if ((waktu - lastInterrupt >= tKuantum) || (telahProses[first] == waktuEksekusi[first]))
+
+	// mengurusi proses yang telah SELESAI 
+			// proses yang telah selesai harus dimasukkan ke readyqueue dan dihapus dari antrian
+		if (telahProses[0] == (waktuEksekusi[0]))
 		{
-			first = (first+1) % (nProses-indexreadyqueue);
-			last =  (last+1) % (nProses-indexreadyqueue);
+			readyqueue[indexreadyqueue] = antrian[0];
+			removeElement(telahProses,0);
+			removeElement(antrian,0);
+			indexreadyqueue++;
+
+			printf("%d\t",waktu);
+			cetakAntrian(antrian);
+			printf("\t\t\t");
+			
+			if (readyqueue[0] != EMPTY) // jika sudah ada proses yang selesai
+			{
+				for (int k = 0;k<nProses;k++)
+				{
+					if (readyqueue[k] != EMPTY)
+					{
+						printf("P%d",readyqueue[k]);
+						if (k != nProses-1)
+						{
+							printf(",");
+						}
+					}
+				}
+			}
+			printf("\n");
+		}
+
+
+		// ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan
+		if ((waktu - lastInterrupt >= tKuantum) || (telahProses[0] == waktuEksekusi[0]))
+		{
+			geserSiklik(antrian, indexantrian );
+			geserSiklik(telahProses, indexantrian);
+			geserSiklik(waktuEksekusi, indexantrian);
+			geserSiklik(waktuKedatangan, indexantrian);
+
+			printf("%d\t",waktu);
+			cetakAntrian(antrian);
+			printf("\t\t\t");
+			
+			if (readyqueue[0] != EMPTY) // jika sudah ada proses yang selesai
+			{
+				for (int k = 0;k<nProses;k++)
+				{
+					if (readyqueue[k] != EMPTY)
+					{
+						printf("P%d",readyqueue[k]);
+						if (k != nProses-1)
+						{
+							printf(",");
+						}
+					}
+				}
+			}
+			printf("\n");
 			lastInterrupt = waktu;
 		}
 
-		// mengurusi proses yang telah SELESAI dijalankan
-		if (telahProses[first] == (waktuEksekusi[first]))
-		{
-			readyqueue[indexreadyqueue] = antrian[first];
-			indexreadyqueue++;
-		}
 
 		// mencetak baris baru dalam Gantt-chart
 			// pencetakan baris akan dilakukan apabila ada proses yang selesai, ada proses yang datang, atau waktu telah mencapai kuantum waktu
-		if ((waktu - lastInterrupt >= tKuantum) || (indexreadyqueue == nProses) || (isInArray(waktu,waktuKedatangan) == 1))
+		if ((indexreadyqueue == nProses) || isInArray(waktu,waktuKedatangan))
 		{
 			printf("%d\t",waktu);
-			cetakAntrian(antrian,first,indexreadyqueue);
+			cetakAntrian(antrian);
 			printf("\t\t\t");
 			
 			if (readyqueue[0] != EMPTY) // jika sudah ada proses yang selesai
@@ -248,7 +341,10 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 			}
 			printf("\n");	
 		}
-		telahProses[first]++;
+		if (telahProses[0] != EMPTY)
+		{
+			telahProses[0]++;
+		}
 		waktu++;
 	}
 }

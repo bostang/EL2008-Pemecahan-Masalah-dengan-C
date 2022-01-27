@@ -135,6 +135,7 @@ procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of int
 			lastInterrupt <- waktu
 
 			{ mengurusi proses yang telah SELESAI dijalankan }
+				{ proses yang telah selesai harus dimasukkan ke readyqueue dan dihapus dari antrian }
 			if (telahProses[first] = (waktuEksekusi[first])) then
 				readyqueue[indexreadyqueue] = antrian[first]
 				indexreadyqueue <- indexreadyqueue + 1
