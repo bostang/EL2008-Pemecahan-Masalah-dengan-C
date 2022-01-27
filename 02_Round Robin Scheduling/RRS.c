@@ -263,26 +263,6 @@ void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
 			removeElement(telahProses,0);
 			removeElement(antrian,0);
 			indexreadyqueue++;
-
-			printf("%d\t",waktu);
-			cetakAntrian(antrian);
-			printf("\t\t\t");
-			
-			if (readyqueue[0] != EMPTY) // jika sudah ada proses yang selesai
-			{
-				for (int k = 0;k<nProses;k++)
-				{
-					if (readyqueue[k] != EMPTY)
-					{
-						printf("P%d",readyqueue[k]);
-						if (k != nProses-1)
-						{
-							printf(",");
-						}
-					}
-				}
-			}
-			printf("\n");
 		}
 
 
