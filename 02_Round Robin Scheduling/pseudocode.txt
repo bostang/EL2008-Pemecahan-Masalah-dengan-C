@@ -3,7 +3,7 @@
 { Tanggal : Selasa, 25 Januari 2022 ; Rabu, 26 Januari 2022 }
 
 Program RRS (Round robin scheduling)
-{ DESKRIPSI PROGRAM }
+{ Program yang mensimulasikan algoritma scheduling : round-robin  }
 KAMUS
 	{ Variabel }
 		waktuKedatangan : array[0..maxSize-1] of integer { array yang menyimpan informasi waktu kedatangan dari tiap proses }
@@ -12,7 +12,7 @@ KAMUS
 		tKuantum : integer { ukuran kuantum waktu }
 
 	{ Konstanta }
-		maxSize : integer := 100 { maksimum banyaknya proses yang ada (100 dipilih secara sembarang) }
+		maxSize : integer := 10 { maksimum banyaknya proses yang ada (10 dipilih secara sembarang) }
 		EMPTY : integer := 9999 { indeks boneka yang menyatakan kosong }
 		timeLimit : integer := 99999
 
@@ -21,10 +21,8 @@ KAMUS
 			{ mencetak time-process table dari proses yang telah di-input }
 		procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of integer)
 			{ realisasi algoritma RRS dan mencetaknya dalam bentuk Gantt-chart }
-
 		function isInArray(integer i, array[0..n-1] of integer arri) -> boolean
 			{ mengembalikan true bila n terdapat di arri }
-
 		procedure cetakAntrian(input antrian: array[0..n-1] of integer, x, y : integer)
 			{ mencetak P{k} dari array of integer yang memiliki elemen k }
 
@@ -33,10 +31,8 @@ ALGORITMA UTAMA
 	{ inisiasi nilai dari array waktuKedatangan dan waktuEksekusi mejadi nol semua }
 
 for (k = 0 to k = maxSize-1) do
-	waktuKedatangan[k] <- 0
-	waktuEksekusi[k] <- 0
-
-
+	waktuKedatangan[k] <- EMPTY
+	waktuEksekusi[k] <- EMPTY
 
 	{ menerima input dari user proses apa aja yang ada serta arriving time dan executing time }
 input(nProses)
@@ -79,8 +75,10 @@ procedure cetakAntrian(input antrian: array[0..n-1] of integer, x,y : integer)
 	ALGORITMA 
 		{ telah dipastikan bahwa setiap elemen array antrian berbeda-beda dan merujuk kepada proses }
 	for (k = 0 to k = n-1) do 
-		index <- (k+x) mod (n-y)
-		output('P{antrian[index]}')
+		if (nProses != y) then
+			index <- (k+x) mod (n-y)
+		if (antrian[index] != EMPTY) then
+			output('P{antrian[index]}')
 		if (k != n-1 ) then { mencetak spasi untuk elemen bukan terakhir }
 			output(' ')
 
@@ -98,12 +96,11 @@ procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of int
 		antrian : array [0..n-1] of integer { array atrian proses }
 		telahProses : array[0..n-1] of integer { lama waktu yang telah berlangsung untuk masing-masing proses }
 		waktu : integer
-		waktupast : integer { waktu terakhir kali mencapai kuantum waktu }
+		lastInterrupt : integer { waktu terakhir kali mencapai kuantum waktu }
 		readyqueue : array [0..n-1] of integer { array yang menyatakan proses yang telah selesai dijalankan }
 		indexreadyqueue : integer { index pada array readyqueue yang akan digunakan juga ketika pencetakan elemen antrian }
 		first : integer { indeks yang merujuk ke elemen pertama pada queue -> proses yang sedang dijalankan }
 		last : integer { indeks yang merujuk ke elemen terakhir pada queue -> proses yang terakhir dijalankan }
-
 		indexantrian : integer 
 
 	ALGORITMA
@@ -111,29 +108,31 @@ procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of int
 	first <- 0
 	last <- nProses - 1
 	waktu <- 0
-	waktupast <- 0
+	lastInterrupt <- 0
 	indexreadyqueue <- 0
-	for (k = 0 to k = nProses) do
+	for (k = 0 to k = n-1) do
 		readyqueue[k] <- EMPTY
 		telahProses[k] <- EMPTY
 		antrian[k] <- EMPTY
 
 	output('Waktu \t Antrian \t selesai')
-	while(indexreadyqueue <= nProses and waktu < timeLimit) do { terus lakukan sampai semua proses telah dijalankan }
+	while(indexreadyqueue < nProses and waktu < timeLimit) do { terus lakukan sampai semua proses telah dijalankan }
 
 			{ Ada proses yang masuk ke queue }
+				{ ketika ada proses yang masuk ke queue, last harus bergeser }
 		for (k = 0 to k = nProses-1) do
 			if (waktu = waktuKedatangan[k]) then
 				antrian[indexantrian] = k
 				telahProses[indexantrian] = 0
 				indexantrian <- indexantrian + 1
+				last <- last + indexreadyqueue
 
 			{ mengubah first ke index elemen yang akan diproses }
 			{ perubahan terjadi ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan }
-		if (waktu - waktupast = tKuantum) or ((telahProses[first]) == (waktuEksekusi[first])) then
+		if (waktu - lastInterrupt >= tKuantum) or ((telahProses[first]) == (waktuEksekusi[first])) then
 			first <- (first + 1) mod (n - indexreadyqueue)
 			last <- (last + 1) mod (n - indexreadyqueue)
-			waktupast <- waktu
+			lastInterrupt <- waktu
 
 			{ mengurusi proses yang telah SELESAI dijalankan }
 			if (telahProses[first] = (waktuEksekusi[first])) then
@@ -143,7 +142,7 @@ procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of int
 			{ mencetak baris baru dalam Gantt-chart }
 			{ pencetakan baris akan dilakukan apabila ada proses yang selesai, ada proses yang datang, atau waktu telah mencapai kuantum waktu }
 
-		if (waktu - waktupast = tKuantum) or (indexreadyqueue = nProses) or (isInArray(waktu,waktuKedatangan)) then
+		if (waktu - lastInterrupt >= tKuantum) or (indexreadyqueue = nProses) or (isInArray(waktu,waktuKedatangan)) then
 			output(waktu \t)
 			cetakAntrian(antrian,first,indexreadyqueue)
 			output(\t)

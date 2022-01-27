@@ -17,9 +17,10 @@
 	// Konstanta
 		// maxSize : integer := 10
 			// maksimum banyaknya proses yang ingin di-schedule
-			// angka 100 dipilih secara sembarang
+			// angka 10 dipilih secara sembarang
 		// EMPTY : integer := 9999
 			// indeks boneka yang menyatakan bahwa elemen pada suatu array kosong
+		// timeLimit : integer := 9999
 	// Fungsi/Prosedur
 		// procedure cetakTimeProcessTable(input waktuEksekusi, waktuKedatangan: array[0..n-1] of integer)
 			// mencetak time-process table dari proses yang telah di-input
@@ -116,11 +117,7 @@ void cetakAntrian(int antrian[maxSize],int x, int y)
 			// index : integer
 	// ALGORITMA
 
-		// x -> menyatakan posisi awal dari elemen ber-indeks 0 dari array antrian
-		// y -> menyatakan banyaknya elemen di akhir cetakAntrian yang tidak diikutkan
-
 	for (int k = 0;k<(nProses-y);k++)
-	//for (int k = 0;k<nProses;k++)
 	{
 		if (nProses != y)
 		{
@@ -139,6 +136,8 @@ void cetakAntrian(int antrian[maxSize],int x, int y)
 		}
 		
 	}
+	// x -> menyatakan posisi awal dari elemen ber-indeks 0 dari array antrian
+	// y -> menyatakan banyaknya elemen di akhir antrian yang tidak diikutkan
 	// x sebagai offset, misalkan kita ingin mencetak elemen dengan index 2,3,4,0, dan 1. maka n = 5 dan x = 2
 	// y sebagai jumlah elemen antrian yang tidak perlu dicetak lagi
 
@@ -184,7 +183,7 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 	int indexreadyqueue = 0;
 	int indexantrian = 0;
 
-	for (int k = 0;k<nProses;k++)
+	for (int k = 0;k<maxSize;k++)
 	{
 		readyqueue[k] = EMPTY;
 		antrian[k] = EMPTY;
@@ -197,6 +196,7 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 	while (indexreadyqueue < nProses && waktu < timeLimit) // terus lakukan sampai semua proses telah dijalankan
 	{
 		// ada proses yang masuk ke queue
+			// ketika ada proses yang masuk ke queue, last harus bergeser
 		for (int k = 0;k<nProses;k++)
 		{
 			if (waktu == waktuKedatangan[k])
@@ -204,6 +204,7 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 				antrian[indexantrian]= k;
 				telahProses[indexantrian] = 0;
 				indexantrian++;
+				last = (last + 1) % (nProses-indexreadyqueue);
 			}
 		}
 
@@ -219,8 +220,8 @@ void ganttChart(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 		// mengurusi proses yang telah SELESAI dijalankan
 		if (telahProses[first] == (waktuEksekusi[first]))
 		{
-				readyqueue[indexreadyqueue] = antrian[first];
-				indexreadyqueue++;
+			readyqueue[indexreadyqueue] = antrian[first];
+			indexreadyqueue++;
 		}
 
 		// mencetak baris baru dalam Gantt-chart
