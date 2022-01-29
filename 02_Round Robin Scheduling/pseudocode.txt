@@ -25,7 +25,23 @@ KAMUS
 			{ mengembalikan true bila n terdapat di arri }
 		procedure cetakAntrian(input antrian: array[0..n-1] of integer, x, y : integer)
 			{ mencetak P{k} dari array of integer yang memiliki elemen k }
-
+		procedure swapElement(array[0..maxSize-1] of integer; integer: a, b) 
+			{ prosedur untuk menukar 2 elemen pada sebuah array }
+		procedure geserSiklik(input arri: array[0..maxSize-1] of integer, x : integer ) 
+			{ menggeser elemen pada suatu array ke kiri dengan bayangan array tersebut siklik (elemen pertama terhubung langsung) 
+			dengan element terakhir. x adalah banyaknya elemen array yang tak kosong.
+			array akan dibuat dipepet ke kiri, artinya tidak ada elemen kosong yang berindeks
+			lebih kecil dari elemen tak kosong. asumsi awal array sudah pepet kiri }
+		procedure removeElement(input arri : array[0..maxSize-1] of integer, indexRemove)
+			{ menghapus elemen dari suatu array of integer dan menggantikannya dengan sebuah
+			nilai yang ditetapkan sebagai EMPTY. Array hasil sedemikian rupa sehingga tidak ada
+			EMPTY di tengah-tengah elemen non-EMPTY }
+		function minArray(int arri[0..maxSize-1]) -> integer
+			{ mencari nilai minimum dari suatu array of integer }
+		function countElem(arri : arry [0..maxSize-1] of integer) -> integer
+			{ menghitung banyaknya elemen dari suatu array yang tidak kosong }
+		procedure cetakBaris(waktu : integer, antrian : array [0..maxSize-1] of integer, readyqueue : array [0..maxSize-1] of integer)
+			{ mencetak baris dalam gantt-chart pada suatu waktu }
 ALGORITMA UTAMA
 
 	{ inisiasi nilai dari array waktuKedatangan dan waktuEksekusi mejadi nol semua }
@@ -50,6 +66,68 @@ ganttChart(waktuKedatangan, waktuEksekusi)
 
 REALISASI FUNGSI/PROSEDUR
 
+function minArray(int arri[0..maxSize-1]) -> integer
+	KAMUS LOKAL
+		{ Variabel }
+			min : integer { nilai minimum sementara }
+	ALGORITMA
+	int min = arri[0];
+
+	for (int k = 1 to maxSize-1) do
+		if (arri[k] != EMPTY) then
+			if (arri[k] < min) then
+				min <- arri[k]
+	-> min
+
+function countElem(arri : arry [0..maxSize-1] of integer) -> integer
+	KAMUS LOKAL
+		count : integer { pencacah }
+	ALGORITMA
+	count <- 0
+	for (k = 0 to k = maxSize - 1) do
+		if (arri[k] != EMPTY) then
+			count <- count + 1
+	-> count
+
+procedure swapElement(array[0..maxSize-1] of integer; integer: a, b)
+	KAMUS LOKAL
+		{ Variabel }
+			temp : integer
+	ALGORITMA
+	temp <- arri[a]
+	arri[a] <- arri[b]
+	arri[b] <- temp
+
+procedure geserSiklik(input arri: array[0..maxSize-1] of integer, x : integer ) 
+	KAMUS LOKAL
+	ALGORITMA
+		{ langkah 1 : menggeser secara siklik }
+	for (k = 0 to k = maxSize - 2) do
+		swapElement(arri,k,k+1)
+
+	swapElement(arri,x-1,maxSize-1)
+
+procedure removeElement(input arri : array[0..maxSize-1] of integer, indexRemove)
+	KAMUS LOKAL
+	ALGORITMA
+		{ langkah 1 : mengapungkan elemen ke ujung array }
+	for (k = indexRemove to k = maxSize-1) do
+		swapElement(arri,k,k+1)
+		{ langkah 2 : menghapus elemen yang paling ujung }
+	arri[maxSize-1] <- EMPTY
+
+procedure geserSiklik(input arri: array[0..maxSize-1] of integer, x : integer ) 
+	KAMUS LOKAL
+	ALGORITMA
+		{ langkah 1 : menggeser secara siklik }
+	for (int k = 0 to k = maxSize-2) do
+		swapElement(arri,k,k+1)
+		
+		{ langkah 2 : pepet elemen tak kosong ke kiri }
+	swapElement(arri,x-1,maxSize-1)
+
+procedure removeElement(input arri : array[0..maxSize-1] of integer, indexRemove)
+
 procedure cetakTimeProcessTable(input waktuKedatangan, waktuEksekusi : array [0..n-1] of integer)
 	KAMUS LOKAL
 	ALGORITMA
@@ -66,88 +144,107 @@ function isInArray(integer i, array[0..n-1] of integer arri) -> boolean
 	-> False
 
 procedure cetakAntrian(input antrian: array[0..n-1] of integer, x,y : integer)
-	{ x sebagai offset, misalkan kita ingin mencetak elemen dengan index 2,3,4,0, dan 1. maka n = 5 dan x = 2  }
-	{ y sebagai jumlah elemen antrian yang tidak perlu dicetak lagi }
-	
 	KAMUS LOKAL
-		{ Variabel }
-		index : integer
 	ALGORITMA 
 		{ telah dipastikan bahwa setiap elemen array antrian berbeda-beda dan merujuk kepada proses }
-	for (k = 0 to k = n-1) do 
-		if (nProses != y) then
-			index <- (k+x) mod (n-y)
-		if (antrian[index] != EMPTY) then
-			output('P{antrian[index]}')
-		if (k != n-1 ) then { mencetak spasi untuk elemen bukan terakhir }
-			output(' ')
+	for (k = 0 to k = nProses-1) do
+		if (antrian[k] != EMPTY) then
+			output(antrian[k])
+		if (antrian[k+1] != EMPTY ) then
+			output(" ") { mencetak spasi bila belum elemen terujung }
 
-		{ contoh :
-			misalkan antrian = {1,3,2,0,4} untuk y = 1 :
-		 untuk x = 0 -> akan tercetak : P1 P3 P2 P0 {P4}
-		 untuk x = 1 -> akan tercetak : P3 P2 P0 {P4} P1
-		 untuk x = 2 -> akan tercetak : P2 P0 {P4} P1 P3 
-		 	note : {} -> tidak dicetak
-		}
-
+procedure cetakBaris(waktu : integer, antrian : array [0..maxSize-1] of integer, readyqueue : array [0..maxSize-1] of integer)
+	KAMUS LOKAL
+	ALGORITMA
+	output(waktu \t)
+	cetakAntrian(antrian,first,indexreadyqueue)
+	output(\t)
+	if (readyqueue[0] != EMPTY) then
+		for (k = 0 to k = nProses-1)
+			if (readyqueue[k] != EMPTY) then
+				output("P",readyqueue[k])
+			if (readyqueue[k+1] != EMPTY) then
+				output(", ")
 
 procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of integer)
 	KAMUS LOKAL
-		antrian : array [0..n-1] of integer { array atrian proses }
-		telahProses : array[0..n-1] of integer { lama waktu yang telah berlangsung untuk masing-masing proses }
+		kondisiGeser : boolean
+			{ flag agar antrian tidak digeser ketika bar	saja ada elemen yang dihapus }
+		antrian : array [0..n-1] of integer
+			{ array atrian proses }
+		telahProses : array[0..n-1] of integer
+			{ lama waktu yang telah berlangsung untuk masing-masing proses }
 		waktu : integer
-		lastInterrupt : integer { waktu terakhir kali mencapai kuantum waktu }
-		readyqueue : array [0..n-1] of integer { array yang menyatakan proses yang telah selesai dijalankan }
-		indexreadyqueue : integer { index pada array readyqueue yang akan digunakan juga ketika pencetakan elemen antrian }
-		first : integer { indeks yang merujuk ke elemen pertama pada queue -> proses yang sedang dijalankan }
-		last : integer { indeks yang merujuk ke elemen terakhir pada queue -> proses yang terakhir dijalankan }
-		indexantrian : integer 
+		lastInterrupt : integer
+			{ waktu terakhir kali mencapai kuantum waktu }
+		readyqueue : array [0..n-1] of integer
+			{ array yang menyatakan proses yang telah selesai dijalankan }
+		indexreadyqueue : integer
+			{ index pada array readyqueue yang akan digunakan juga ketika pencetakan elemen antrian }
+		indexantrian : integer
+			{ jumlah elemen pada array antrian }
+		tempwaktuEksekusi : array[0..maxSize-1] of integer
+			{ array waktu eksekusi masing-masing proses (yang ikut digeser bersama dengan antrian) }
 
 	ALGORITMA
 		{ inisiasi nilai variabel }
-	first <- 0
-	last <- nProses - 1
 	waktu <- 0
-	lastInterrupt <- 0
+	lastInterrupt <- minArray(waktuKedatangan)
 	indexreadyqueue <- 0
+	indexantrian <- 0
+	kondisiGeser <- true
 	for (k = 0 to k = n-1) do
 		readyqueue[k] <- EMPTY
 		telahProses[k] <- EMPTY
 		antrian[k] <- EMPTY
 
+		{ mencetak header gantt-chart }
 	output('Waktu \t Antrian \t selesai')
+
+		{ mencetak baris gantt-chart sekaligus menjalankan algoritma RRS }
 	while(indexreadyqueue < nProses and waktu < timeLimit) do { terus lakukan sampai semua proses telah dijalankan }
 
-			{ Ada proses yang masuk ke queue }
-				{ ketika ada proses yang masuk ke queue, last harus bergeser }
+		{ mengurusi proses yang telah SELESAI dijalankan }
+			{ proses yang telah selesai harus dimasukkan ke readyqueue dan dihapus dari antrian }
+		if (telahProses[first] = (waktuEksekusi[first])) then
+			readyqueue[indexreadyqueue] = antrian[0]
+			indexreadyqueue <- indexreadyqueue + 1
+			removeElement(telahProses,0)
+			removeElement(antrian,0)
+			kondisiGeser <- false
+
+		{ ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan }
+		if (waktu - lastInterrupt >= tKuantum) or ((telahProses[first]) >= (waktuEksekusi[first])) then
+			geserSiklik(antrian, countElem(antrian))
+			geserSiklik(telahProses, countElem(telahProses))
+			geserSiklik(tempwaktuEksekusi,countElem(tempwaktuEksekusi))
+
+		kondisiGeser <- true
+
+		if (!(isInArray(waktu, waktuKedatangan))) { tidak dilakukan ketika ada proses yang datang pada waktu tersebut }
+		{
+			cetakBaris(waktu, antrian, readyqueue)
+		}
+
+		lastInterrupt <- waktu
+
+		{ Ada proses yang masuk ke queue }
+			{ ketika ada proses yang masuk ke queue, last harus bergeser }
 		for (k = 0 to k = nProses-1) do
 			if (waktu = waktuKedatangan[k]) then
 				antrian[indexantrian] = k
 				telahProses[indexantrian] = 0
 				indexantrian <- indexantrian + 1
-				last <- last + indexreadyqueue
+	
+		for (k = 0 to k = nProses-1) do
+			if (antrian[k] != EMPTY) then
+				tempwaktuEksekusi[k] <- waktuEksekusi[antrian[k]]
 
-			{ mengubah first ke index elemen yang akan diproses }
-			{ perubahan terjadi ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan }
-		if (waktu - lastInterrupt >= tKuantum) or ((telahProses[first]) == (waktuEksekusi[first])) then
-			first <- (first + 1) mod (n - indexreadyqueue)
-			last <- (last + 1) mod (n - indexreadyqueue)
-			lastInterrupt <- waktu
+		{ mencetak baris baru dalam gantt-chart }
+		if ((indexreadyqueue = nProses) or isInArray(waktu, waktuKedatangan)) then
+			cetakBaris(waktu, antrian, readyqueue)
 
-			{ mengurusi proses yang telah SELESAI dijalankan }
-				{ proses yang telah selesai harus dimasukkan ke readyqueue dan dihapus dari antrian }
-			if (telahProses[first] = (waktuEksekusi[first])) then
-				readyqueue[indexreadyqueue] = antrian[first]
-				indexreadyqueue <- indexreadyqueue + 1
+		if (telahProses[0] != EMPTY) then
+			telahProses[0] <- telahProses[0] + 1
 
-			{ mencetak baris baru dalam Gantt-chart }
-			{ pencetakan baris akan dilakukan apabila ada proses yang selesai, ada proses yang datang, atau waktu telah mencapai kuantum waktu }
-
-		if (waktu - lastInterrupt >= tKuantum) or (indexreadyqueue = nProses) or (isInArray(waktu,waktuKedatangan)) then
-			output(waktu \t)
-			cetakAntrian(antrian,first,indexreadyqueue)
-			output(\t)
-			if (readyqueue[0] != EMPTY) then
-				for (k = 0 to k = nProses-1)
-					if (readyqueue[k] != EMPTY)
-						output(readyqueue[k])
+		waktu <- waktu + 1

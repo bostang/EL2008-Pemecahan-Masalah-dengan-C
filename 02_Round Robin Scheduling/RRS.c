@@ -30,10 +30,8 @@
 			// mengembalikan true bila n terdapat di arri
 		// procedure cetakAntrian(input antrian: array[0..n-1] of integer)
 			// mencetak P{k} dari array of integer yang memiliki elemen k }
-		// function isAllEmpty(array[0..maxSize-1] of integer) -> boolean
-			// fungsi yang akan mengembalikan nilai true bila semua elemen pada array bernilai EMPTY
-		// function swapElement(array[0..maxSize-1] of integer; integer: a, b) -> arr [0..n-1] of integer
-			// fungsi untuk menukar 2 elemen pada sebuah array
+		// procedure swapElement(array[0..maxSize-1] of integer; integer: a, b) -> arr [0..n-1] of integer
+			// prosedur untuk menukar 2 elemen pada sebuah array
 		// procedure geserSiklik(input arri: array[0..maxSize-1] of integer, x : integer ) 
 			// menggeser elemen pada suatu array ke kiri dengan bayangan array tersebut siklik (elemen pertama terhubung langsung)
 			// dengan element terakhir. x adalah banyaknya elemen array yang tak kosong.
@@ -45,9 +43,9 @@
 			// EMPTY di tengah-tengah elemen non-EMPTY
 		// function minArray(int arri[0..maxSize-1]) -> integer
 			// mencari nilai minimum dari suatu array of integer
-		// fungsi countElem(arri : arry [0..maxSize-1] of integer) -> integer
+		// function countElem(arri : arry [0..maxSize-1] of integer) -> integer
 			// menghitung banyaknya elemen dari suatu array yang tidak kosong
-		// procedure cetakBaris()
+		// procedure cetakBaris(waktu : integer, antrian : array [0..maxSize-1] of integer, readyqueue : array [0..maxSize-1] of integer)
 			// mencetak baris dalam gantt-chart pada suatu waktu
 
 // ALGORITMA UTAMA
@@ -69,7 +67,6 @@ void cetakTimeProcessTable(int waktuKedatangan[], int waktuEksekusi[]);
 bool isInArray(int i, int arri[]); 
 void cetakAntrian(int antrian[]);
 void ganttChart(int waktuKedatangan[], int waktuEksekusi[]);
-bool isAllEmpty(int arri[]);
 
 int main()
 {
@@ -165,7 +162,7 @@ void geserSiklik(int arri[maxSize], int x)
 	{
 		swapElement(arri,k,k+1);
 	}
-		// langkah 2 : pepet ke kiri
+		// langkah 2 : pepet elemen tak kosong ke kiri
 	swapElement(arri,x-1,maxSize-1);
 }
 
@@ -182,19 +179,6 @@ void removeElement(int arri[maxSize], int indexRemove)
 	arri[maxSize-1] = EMPTY;
 }
 
-bool isAllEmpty(int arri[maxSize])
-{
-	// KAMUS LOKAL
-	// ALGORITMA
-	for (int k = 0;k<maxSize;k++)
-	{
-		if(arri[k] != EMPTY)
-		{
-			return false;
-		}
-	}
-	return true;
-}
 void cetakTimeProcessTable(int waktuKedatangan[maxSize], int waktuEksekusi[maxSize])
 {
 	// KAMUS LOKAL
@@ -276,19 +260,12 @@ void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
 				// array yang menyatakan proses yang telah selesai dijalankan
 			// indexreadyqueue : integer
 				// jumlah elemen yang sudah ada pada array readyqueue
-			// first : integer
-				// indeks yang merujuk ke elemen pertama pada queue -> proses yang sedang dijalankan
-			// last : integer
-				//  indeks yang merujuk ke elemen terakhir pada queue -> proses yang terakhir dijalankan
 			// indexantrian : integer
 				// jumlah elemen pada array antrian
 			// tempwaktuEksekusi : array[0..maxSize-1] of integer
 				// array waktu eksekusi masing-masing proses (yang ikut digeser bersama dengan antrian)
 			// kondisiGeser : boolean
 				// flag agar antrian tidak digeser ketika baru saja ada elemen yang dihapus
-			// : boolean
-				// flag agar tidak mencetak suatu baris dua kali pada waktu yang sama
-				// kasus yang mungkin yaitu saat pada suatu waktu ada elemen yang masuk dan ada elemen yang dihapuskan
 
 	// ALGORITMA
 		// deklarasi dan inisiasi variabel lokal
