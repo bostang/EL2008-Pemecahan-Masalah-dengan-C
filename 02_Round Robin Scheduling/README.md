@@ -40,10 +40,17 @@ Berikut adalah contoh input-output programnya :
 		
 		
 maka program pada console akan tampak seperti sebagai berikut:
-	input
-	<GAMBAR_INPUT>
-	output
-	<GAMBAR_OUTPUT>
+	
+#### input
+	
+![Contoh Input pada Console](https://github.com/bostang/ProblemSolving_C/blob/main/02_Round%20Robin%20Scheduling/img_README/contohInput.png)
+	
+#### output
+##### *Time-Process Table*
+![Contoh Output pada Console : ](https://github.com/bostang/ProblemSolving_C/blob/main/02_Round%20Robin%20Scheduling/img_README/contohOutput_1.png)
+
+##### *Gantt-chart*
+![Contoh Output pada Console : Gantt-Chart](https://github.com/bostang/ProblemSolving_C/blob/main/02_Round%20Robin%20Scheduling/img_README/contohOutput_2.png)
 
 
 ## Solusi
