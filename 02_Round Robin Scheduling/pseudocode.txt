@@ -23,7 +23,7 @@ KAMUS
 			{ realisasi algoritma RRS dan mencetaknya dalam bentuk Gantt-chart }
 		function isInArray(integer i, array[0..n-1] of integer arri) -> boolean
 			{ mengembalikan true bila n terdapat di arri }
-		procedure cetakAntrian(input antrian: array[0..n-1] of integer, x, y : integer)
+		procedure cetakAntrian(input antrian: array[0..n-1] of integer)
 			{ mencetak P{k} dari array of integer yang memiliki elemen k }
 		procedure swapElement(array[0..maxSize-1] of integer; integer: a, b) 
 			{ prosedur untuk menukar 2 elemen pada sebuah array }
@@ -143,7 +143,7 @@ function isInArray(integer i, array[0..n-1] of integer arri) -> boolean
 			-> True
 	-> False
 
-procedure cetakAntrian(input antrian: array[0..n-1] of integer, x,y : integer)
+procedure cetakAntrian(input antrian: array[0..n-1] of integer)
 	KAMUS LOKAL
 	ALGORITMA 
 		{ telah dipastikan bahwa setiap elemen array antrian berbeda-beda dan merujuk kepada proses }
@@ -157,7 +157,7 @@ procedure cetakBaris(waktu : integer, antrian : array [0..maxSize-1] of integer,
 	KAMUS LOKAL
 	ALGORITMA
 	output(waktu \t)
-	cetakAntrian(antrian,first,indexreadyqueue)
+	cetakAntrian(antrian)
 	output(\t)
 	if (readyqueue[0] != EMPTY) then
 		for (k = 0 to k = nProses-1)
@@ -206,27 +206,31 @@ procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of int
 
 		{ mengurusi proses yang telah SELESAI dijalankan }
 			{ proses yang telah selesai harus dimasukkan ke readyqueue dan dihapus dari antrian }
-		if (telahProses[first] = (waktuEksekusi[first])) then
+		if (telahProses[0] != EMPTY and telahProses[0] >= (tempwaktuEksekusi[0])) then
+			kondisiGeser <- false
 			readyqueue[indexreadyqueue] = antrian[0]
-			indexreadyqueue <- indexreadyqueue + 1
 			removeElement(telahProses,0)
 			removeElement(antrian,0)
-			kondisiGeser <- false
-
-		{ ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan }
-		if (waktu - lastInterrupt >= tKuantum) or ((telahProses[first]) >= (waktuEksekusi[first])) then
-			geserSiklik(antrian, countElem(antrian))
-			geserSiklik(telahProses, countElem(telahProses))
-			geserSiklik(tempwaktuEksekusi,countElem(tempwaktuEksekusi))
-
-		kondisiGeser <- true
-
-		if (!(isInArray(waktu, waktuKedatangan))) { tidak dilakukan ketika ada proses yang datang pada waktu tersebut }
-		{
+			indexreadyqueue <- indexreadyqueue + 1
 			cetakBaris(waktu, antrian, readyqueue)
-		}
+			
+			lastInterrupt <- waktu
 
-		lastInterrupt <- waktu
+		{ ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan, maka lastInterrupt akan diupdate }
+
+		if (waktu - lastInterrupt >= tKuantum ) then
+			
+			if (kondisiGeser) then
+				geserSiklik(antrian, countElem(antrian))
+				geserSiklik(telahProses, countElem(telahProses))
+				geserSiklik(tempwaktuEksekusi,countElem(tempwaktuEksekusi))
+
+			if (kondisiGeser and !(isInArray(waktu, waktuKedatangan))) then { tidak dilakukan ketika ada proses yang datang pada waktu tersebut }
+			
+				cetakBaris(waktu, antrian, readyqueue)
+			
+			kondisiGeser <- true
+			lastInterrupt <- waktu
 
 		{ Ada proses yang masuk ke queue }
 			{ ketika ada proses yang masuk ke queue, last harus bergeser }
@@ -240,8 +244,8 @@ procedure ganttChart(input waktuEksekusi, waktuKedatangan: array [0..n-1] of int
 			if (antrian[k] != EMPTY) then
 				tempwaktuEksekusi[k] <- waktuEksekusi[antrian[k]]
 
-		{ mencetak baris baru dalam gantt-chart }
-		if ((indexreadyqueue = nProses) or isInArray(waktu, waktuKedatangan)) then
+		{ mencetak baris baru dalam gantt-chart saat ada proses yang datang }
+		if isInArray(waktu, waktuKedatangan) then
 			cetakBaris(waktu, antrian, readyqueue)
 
 		if (telahProses[0] != EMPTY) then

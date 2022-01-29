@@ -303,10 +303,14 @@ void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
 			removeElement(telahProses,0);
 			removeElement(antrian,0);
 			indexreadyqueue++;
+			cetakBaris(waktu, antrian, readyqueue);
+
+			lastInterrupt = waktu;
 		}
 
-		// ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan
-		if ((waktu - lastInterrupt >= tKuantum) || ((telahProses[0] >= tempwaktuEksekusi[0]) && (telahProses[0] != EMPTY)))
+		// ketika sudah mencapai kuantum waktu atau suatu proses telah selesai dijalankan, maka lastInterrupt akan diupdate
+
+		if (waktu - lastInterrupt >= tKuantum)
 		{
 			if (kondisiGeser)
 			{
@@ -315,13 +319,12 @@ void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
 				geserSiklik(tempwaktuEksekusi, countElem(tempwaktuEksekusi));
 			}
 
-			kondisiGeser = true;
-
-			if (!(isInArray(waktu, waktuKedatangan))) // tidak dilakukan ketika ada proses yang datang agar 
+			if (kondisiGeser && !(isInArray(waktu, waktuKedatangan))) // tidak dilakukan ketika ada proses yang datang agar 
 			{											// pada waktu tersebut tidak dicetak dua kali
-				cetakBaris(waktu, antrian, readyqueue);			
+				cetakBaris(waktu, antrian, readyqueue);	
 			}
-
+			
+			kondisiGeser = true;
 			lastInterrupt = waktu;
 		}
 
@@ -346,7 +349,7 @@ void ganttChart(int waktuKedatangan[nProses], int waktuEksekusi[nProses])
 
 		// mencetak baris baru dalam Gantt-chart
 			// pencetakan baris akan dilakukan apabila ada proses yang selesai, ada proses yang datang, atau waktu telah mencapai kuantum waktu
-		if ((indexreadyqueue == nProses) || isInArray(waktu,waktuKedatangan))
+		if (isInArray(waktu,waktuKedatangan))
 		{
 			cetakBaris(waktu, antrian, readyqueue);
 		}
