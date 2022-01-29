@@ -126,8 +126,6 @@ procedure geserSiklik(input arri: array[0..maxSize-1] of integer, x : integer )
 		{ langkah 2 : pepet elemen tak kosong ke kiri }
 	swapElement(arri,x-1,maxSize-1)
 
-procedure removeElement(input arri : array[0..maxSize-1] of integer, indexRemove)
-
 procedure cetakTimeProcessTable(input waktuKedatangan, waktuEksekusi : array [0..n-1] of integer)
 	KAMUS LOKAL
 	ALGORITMA
