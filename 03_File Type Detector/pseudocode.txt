@@ -1,0 +1,13 @@
+{ Nama    : Bostang Palaguna }
+{ NIM 	  : 13220055 }
+{ Tanggal : Sabtu, 29 Januari 2022 }
+
+Program FileTypeDetector
+{ DESKRIPSI PROGRAM}
+
+KAMUS
+	{ Konstanta }
+	{ Variabel }
+	{ Fungsi/Prosedur }
+ALGORITMA UTAMA
+REALISASI FUNGSI/PROSEDUR
