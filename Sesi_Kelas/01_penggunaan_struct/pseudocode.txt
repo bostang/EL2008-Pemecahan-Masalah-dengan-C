@@ -1,0 +1,33 @@
+Nama    : Bostang Palaguna
+NIM 	   : 13220055
+Tanggal : Kamis, 10 Februari 2022
+
+Program absensiKurang
+	{ program yang menerima Program yang menerima nama, nim, dan persentase kehadiran dalams suatu kelas yang berisi n mahasiswa
+kemudian menampilkan ke layar nama dan NIM mahasiswa yang memiliki kehadiran kurang dari 80%. }
+
+KAMUS
+	Konstanta
+		maxSize : integer := 30 { ukuran maksimum dari array }
+	Tipe Data Bentukan
+		type mhs : < nama : string ,
+					nim  : integer,
+					persentase_kehadiran : real>
+	Variabel
+		n : integer { jumlah mahasiswa }
+		kelas : array of mhs { array yang menyimpan data bertipe mhs }
+
+ALGORITMA UTAMA
+input(n)
+	
+	{ menerima input data mahasiwa }
+
+for (int k = 0 to n-1) do
+	input(kelas[k].nama)
+	input(kelas[k].nim)
+	input(kelas[k].persentase_kehadiran)
+
+	{ mencetak data mahasiswa dengan presensi kurang dari 80% }
+for (int k = 0 to n-1) do
+	if (kelas[k].persentase_kehadiran < 0.8) then
+		output(kelas[k].nama, kelas[k].nim)
