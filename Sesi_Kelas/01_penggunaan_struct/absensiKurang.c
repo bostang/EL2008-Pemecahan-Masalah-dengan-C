@@ -60,7 +60,7 @@ int main()
 	{
 		if (kelas[k].persentase_kehadiran<0.8)
 		{
-			printf("%d. %s\t%d\n",k+1,kelas[k].nama,kelas[k].nim);
+			printf("%s\t\t%d\n",kelas[k].nama,kelas[k].nim);
 		}
 	}
 
