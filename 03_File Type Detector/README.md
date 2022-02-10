@@ -24,9 +24,9 @@ Sekarang kita ingin membuat program C yang bisa mendeteksi jenis file dari file 
 
 Kalau kita lihat setiap file secara mentah melalui *text-editor*, kita akan menyadari bahwa setiap file memiliki `angka ajaib` yang berbeda-beda di bagian awal file yang disebut dengan `file signature`. Berdasarkan [Wikipedia](https://en.wikipedia.org/wiki/List_of_file_signatures), kita bisa mengetahui file signature untuk file .png, .pdf, dan .jpeg adalah sebagai berikut:
 
-<<FILE_SIGNATURE_PNG>>
-<<FILE_SIGNATURE_PDF>>
-<<FILE_SIGNATURE_JPG>>
+![File Signature PNG](https://github.com/bostang/ProblemSolving_C/blob/main/03_File%20Type%20Detector/dll_README/png_fileSignature.png)
+![File Signature JPG](https://github.com/bostang/ProblemSolving_C/blob/main/03_File%20Type%20Detector/dll_README/jpg_fileSignature.png)
+![File Signature PDF](https://github.com/bostang/ProblemSolving_C/blob/main/03_File%20Type%20Detector/dll_README/pdf_fileSignature.png)
 
 Kita akan simpan byte-byte tersebut dalam konstanta array of character:
 ```
