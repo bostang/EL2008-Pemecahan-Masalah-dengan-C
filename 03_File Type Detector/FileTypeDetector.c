@@ -3,7 +3,8 @@
 // Tanggal : Sabtu, 29 Januari 2022 ; Minggu, 30 Januari 2022
 
 // Program FileTypeDetector
-	// DESKRIPSI PROGRAM
+	// Menerima input file. Akan ditampilkan apakah file yang di-input
+	// merupakan file .pdf, .png, .jpg, atau bukanketiganya
 // KAMUS
 	// Konstanta
 		// sign_PDF : array[0..4] of character := {0x25,0x50,0x44,0x46,0x2D}
