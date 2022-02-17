@@ -17,6 +17,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{hyperref} % untuk menggunakan hyperlink 
+\usepackage{float} % untuk menggunakan figure position specifier H -> agar posisi konsisten dengan urutan sourcecode
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -107,7 +108,7 @@
 
 \subsection{Algoritma Djikstra}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centerline{\includegraphics[width=0.4\textwidth]{./sources/algoritma_djikstra.png}}
     \caption{Pseudocode Algoritma Djikstra.}
     \label{fig1}
@@ -165,7 +166,7 @@
     sesuai dengan spesifikasi yang diharapakan. Tahap terakhir
     penelitian adalah pemaparan kode yang berhasil dijalankan tersebut ke dalam paper.
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.15\textwidth]{./sources/metodologi_penelitian.png}}
         \caption{Skema Metodologi Penelitian.}
         \label{fig2}
@@ -195,7 +196,7 @@
     printgraph (Fungsi Graph) untuk memunculkan graph berukuran $n \times n$ ke layar pengguna. Algoritma dari fungsi tersebut
     dapat dilihat pada bagian di bawah ini:
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.4\textwidth]{./sources/printgraph.png}}
         \caption{Pseudocode fungsi \textit{printgraph}.}
         \label{fig3}
@@ -205,7 +206,7 @@
     pada array yang akan diproses dengan menggunakan pendekatan algoritma Dijkstra. Abstraksi fungsi yang digunakan
     dapat dilihat pada bagian berikut ini:
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.4\textwidth]{./sources/idx_process.png}}
         \caption{Pseudocode fungsi \textit{idxprocess}.}
         \label{fig4}
@@ -224,7 +225,7 @@
     Implementasi algoritma dalam abstraksi tersebut dapat dilihat
     pada gambar di bawah ini:
      
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.4\textwidth]{./sources/bacaJumlahTanaman.png}}
         \caption{Pseudocode pembacaan jumlah tanaman.}
         \label{fig5}
@@ -234,7 +235,7 @@
     perhitungan dari pencarian rute terdekat. Proses memasukkan
     graph dapat dilihat pada algoritma berikut ini:
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.4\textwidth]{./sources/masukkanGraph.png}}
         \caption{Pseudocode prosedur memasukkan graph.}
         \label{fig6}
@@ -244,7 +245,7 @@
     dari algoritma Dijkstra untuk pencarian rute terdekat adalah
     sebagai berikut:
     
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.4\textwidth]{./sources/cariJarak.png}}
         \caption{Pseudocode pencarian jarak dengan algoritma Djikstra.}
         \label{fig7}
@@ -266,7 +267,7 @@
     linear sehingga kompleksitas waktunya adalah $O(n^2)$. Grafik
     kompleksitas waktu dapat direpresentasikan pada gambar berikut :
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.5\textwidth]{./sources/onn.png}}
         \caption{Grafik kompleksitas waktu algoritma Djikstra.}
         \label{fig8}
@@ -279,7 +280,7 @@
     sebesar matriks di atas, mengakibatkan program dengan kompleksitas $O(n^2)$. Hal ini dapat dilihat pada grafik kompleksitas
     tempat pada gambar berikut:
 
-    \begin{figure}[htbp]
+    \begin{figure}[H]
         \centerline{\includegraphics[width=0.5\textwidth]{./sources/onn.png}}
         \caption{Grafik kompleksitas ruang algoritma Djikstra.}
         \label{fig9}
