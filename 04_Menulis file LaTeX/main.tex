@@ -10,9 +10,8 @@
     % meng-import package yang digunakan
 \usepackage{cite} % untuk mengutip referensi
 \usepackage{amsmath,amssymb,amsfonts}
-    % menulis pseudocode secara mandiri dengan LaTeX sangatlah menjemukkan!
-%\usepackage{algpseudocode}  % untuk menulis pseudo-code
-%\usepackage{algorithm} % untuk menulis pseudo-code
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \usepackage{graphicx} % untuk memasukkan gambar
 \usepackage{textcomp}
 \usepackage{xcolor}
@@ -108,11 +107,37 @@
 
 \subsection{Algoritma Djikstra}
 
-\begin{figure}[H]
-    \centerline{\includegraphics[width=0.4\textwidth]{./sources/algoritma_djikstra.png}}
-    \caption{Pseudocode Algoritma Djikstra.}
-    \label{fig1}
-\end{figure}
+%%%%%%%%%% PSEUDOCODE 1 : ALGORITMA DJIKSTRA %%%%%%%%%%
+
+\begin{algorithm}[H]
+    \caption{Djikstra's Algorithm}\label{alg:Djikstra}
+\begin{algorithmic}
+    \State \textbf{Result:} Find the shortest path from $a$ to $z$
+    \Procedure{Djikstra }{$G$ : weighted connected simple graph, with all weights positive}
+        \State \{$G$ has vertices $a = v_0,v_1,...,v_n = z$ and lengths $w(v_i,v_j)$ where $w(v_i,v_j)=\infty$ if $v_i,v_j$ is not and edge in $G$ \}
+        \For{$i:=1$ \textbf{to} $n$}
+            \State $L(v_i) := \infty$
+        \EndFor
+
+        \State $L(a) := 0$
+        \State $S := \emptyset$
+        \State \{the label are now initialized so that the label of $a$ is 0 and all other label are $\infty$ and $S$ is the empty set\}
+
+        \While{$z\notin S$}
+            \State $u :=$ a vertex not in $S$ with $L(u)$ is minimal
+            \State $S:= S \bigcup {u}$
+            \For{\textit{all vertices $v$ not in $S$}}
+                \If{$L(u)+w(u,v) <L(v)$}
+                    \State $L(v) := L(u) + w(u,b)$
+                    \State \{this adds a vertex to $S$ with minimal label and updates the labels of vertices not in $S$\}
+                \EndIf
+            \EndFor
+        \EndWhile
+    \EndProcedure
+    \State \textbf{Return} $L(z) =$ length of a shortest path from $a$ to $z$
+\end{algorithmic}
+\end{algorithm}
+%%%%%%%%%% ================================= %%%%%%%%%%
 
     Algoritma Dijkstra adalah algoritma yang digunakan untuk
     menemukan jarak jalur terpendek antara dua \textit{vertice} pada
@@ -166,11 +191,25 @@
     sesuai dengan spesifikasi yang diharapakan. Tahap terakhir
     penelitian adalah pemaparan kode yang berhasil dijalankan tersebut ke dalam paper.
 
-    \begin{figure}[H]
-        \centerline{\includegraphics[width=0.15\textwidth]{./sources/metodologi_penelitian.png}}
-        \caption{Skema Metodologi Penelitian.}
-        \label{fig2}
-    \end{figure}
+%%%%%%%%%% PSEUDOCODE 2 : printgraph %%%%%%%%%%
+\begin{algorithm}[H]
+    \caption{Fungsi Graph (printgraph)}\label{alg:printgraph}
+\begin{algorithmic}
+    \State \textbf{Result:} Memunculkan Graph $n \times n$ ke layar
+    \Procedure{printgraph}{$n$, $graph[n][n]$}
+        \While{$i <= n-1$}
+            \If{$graph[i][j] = int\_max$}
+                \State \textbf{output} $-1$
+            \Else
+                \State \textbf{output} $graph[i][j]$
+            \EndIf
+            \State $j \leftarrow j + 1$
+        \EndWhile
+        \State $i \leftarrow i + 1$
+    \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+%%%%%%%%%% ================================= %%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% BAGIAN 4 : IMPLEMENTASI DAN PENGUJIAN %%%%%%%%%%%%%%%%%%%%
 \section{Implementasi dan Pengujian}
@@ -196,21 +235,63 @@
     printgraph (Fungsi Graph) untuk memunculkan graph berukuran $n \times n$ ke layar pengguna. Algoritma dari fungsi tersebut
     dapat dilihat pada bagian di bawah ini:
 
-    \begin{figure}[H]
-        \centerline{\includegraphics[width=0.4\textwidth]{./sources/printgraph.png}}
-        \caption{Pseudocode fungsi \textit{printgraph}.}
-        \label{fig3}
-    \end{figure}
+%%%%%%%%%% PSEUDOCODE 3 : idx_process %%%%%%%%%%
+\begin{algorithm}[H]
+    \caption{Fungsi pencari indeks ($idx\_process$)}\label{alg:idx_process}
+\begin{algorithmic}
+    \State \textbf{Result:} Mencari indeks yang akan diproses dengan algoritma Djikstra
+    \State \textbf{Initialization:}
+    \State $is\_found \leftarrow FALSE$
+    \State  $i \leftarrow 0$
+    \State \textbf{Algorithm:}
+    \While{$i <= n-1$}
+        \State $j \leftarrow 0$
+        \If{$!is_final[i]$ \textbf{and} $!is\_found$}
+            \State $idx\_min \leftarrow i$
+            \State $val\_minimum \leftarrow jarak\_f[i]$
+            \State $is\_found \leftarrow TRUE$
+        \EndIf
+        \If{$is\_found$ \textbf{and} $!is\_final$ \textbf{and} $(jarak\_f[i] < val\_minimum)$}
+            \State $idx\_min \leftarrow i$
+            \State $val\_minimum \leftarrow jarak\_f[i]$
+        \EndIf
+    \EndWhile
+
+    \If{$is\_found$}
+        \State \textbf{Return} $idx\_min$
+    \Else
+        \State \textbf{Return} $int\_max$
+    \EndIf
+
+\end{algorithmic}
+\end{algorithm}
+%%%%%%%%%% ================================= %%%%%%%%%%
 
     Fungsi kedua yang digunakan adalah fungsi pencari indeks
     pada array yang akan diproses dengan menggunakan pendekatan algoritma Dijkstra. Abstraksi fungsi yang digunakan
     dapat dilihat pada bagian berikut ini:
 
-    \begin{figure}[H]
-        \centerline{\includegraphics[width=0.4\textwidth]{./sources/idx_process.png}}
-        \caption{Pseudocode fungsi \textit{idxprocess}.}
-        \label{fig4}
-    \end{figure}
+%%%%%%%%%% PSEUDOCODE 4 : printgraph %%%%%%%%%%
+\begin{algorithm}[H]
+    \caption{Program utama pencarian rute antara dua tanaman - Pembacaan jumlah tanaman}\label{alg:bacajumlahtanaman}
+\begin{algorithmic}
+    \State \textbf{Result:} Menyimpan nama tanaman pada sebuah array
+
+    \State \textbf{Algorithm:}
+    \State \textbf{input}($namafile\_tanaman$)
+    \State \textbf{open}($namafile\_tanaman$)
+    \State \textbf{read}($namafile\_tanaman$)
+    \State $n\_tanaman \leftarrow 0$
+    \State $baris \leftarrow 0$
+    \While{$baris <= max\_len$}
+        \State $token \leftarrow parse(baris)$
+        \State $token \leftarrow nama\_tanaman[n\_tanaman]$
+        \State $n\_tanaman \leftarrow n\_tanaman + 1$
+        \State $baris \leftarrow baris + 1$
+    \EndWhile
+\end{algorithmic}
+\end{algorithm}
+%%%%%%%%%% ================================= %%%%%%%%%%
 
     Program utama akan membaca file database tanaman
     beserta jarak masing-masing tanaman dan akan mencetak
@@ -225,21 +306,87 @@
     Implementasi algoritma dalam abstraksi tersebut dapat dilihat
     pada gambar di bawah ini:
      
-    \begin{figure}[H]
-        \centerline{\includegraphics[width=0.4\textwidth]{./sources/bacaJumlahTanaman.png}}
-        \caption{Pseudocode pembacaan jumlah tanaman.}
-        \label{fig5}
-    \end{figure}  
+%%%%%%%%%% PSEUDOCODE 5 : Memasukkan Graph %%%%%%%%%%
+\begin{algorithm}[H]
+    \caption{Program utama pencarian rute antara dua tanaman - Memasukkan Graph}\label{alg:masukkangraph}
+\begin{algorithmic}
+    \State \textbf{Result:} Menyimpan graph dalam sebuah matriks $n \times n$
+
+    \State \textbf{Algorithm:}
+    \State \textbf{input}($namafile\_graph$)
+    \State \textbf{open}($namafile\_graph$)
+    \State \textbf{read}($namafile\_graph$)
+    \State $baris \leftarrow 0$
+    \While{$baris <= max\_len$}
+        \State $graph[j][k] \leftarrow \leftarrow token$
+        \State $graph[j][k] \leftarrow \leftarrow token$
+
+        \If{$token == -1$}
+            $graph[j][k] \leftarrow int\_max$                 
+            $graph[k][j] \leftarrow int\_max$
+        \Else
+            \State $k \leftarrow k + 1$
+            \State $token \leftarrow parse(NULL)$
+        \EndIf
+    \EndWhile
+    \State $baris \leftarrow baris + 1$
+\end{algorithmic}
+\end{algorithm}
+%%%%%%%%%% ================================= %%%%%%%%%%  
 
     Setelah pembacaan jumlah tanaman dari file, maka diperlukan graph atau jarak antar tanaman yang akan menjadi dasar
     perhitungan dari pencarian rute terdekat. Proses memasukkan
     graph dapat dilihat pada algoritma berikut ini:
 
-    \begin{figure}[H]
-        \centerline{\includegraphics[width=0.4\textwidth]{./sources/masukkanGraph.png}}
-        \caption{Pseudocode prosedur memasukkan graph.}
-        \label{fig6}
-    \end{figure}  
+%%%%%%%%%% PSEUDOCODE 6 : Pencarian Jarak Minimum %%%%%%%%%%
+\begin{algorithm}[H]
+    \caption{Program utama pencarian rute antara dua tanaman: Pencarian Jarak dengan Algoritma Djikstra}\label{alg:jarakMinimum}
+\begin{algorithmic}    
+    \State \textbf{Algorithm:}
+    \State \textbf{input}($idx\_a$)
+    \State $idx\_a \leftarrow idx\_a - 1$
+    \State \textbf{input}($idx\_tujuan$)
+    \State $idx\_tujuan \leftarrow idx\_tujuan - 1$
+
+    \For{$i = 0$ \textbf{to} $n\_tanaman$}
+        \State $is\_final[i] \leftarrow FALSE$
+        \If{$i = idx\_a$}
+            \State $jarak\_f[i] \leftarrow 0$
+        \Else
+            \State $jarak\_f[i] \leftarrow int\_max$
+        \EndIf
+        \For{$j = 0$ \textbf{to} $n\_tanaman$}
+            $list\_dilalui[i][j] \leftarrow int\_max$
+        \EndFor
+        $idx\_lalui[i] \leftarrow 0$
+    \EndFor
+
+    \State $jarak\_f[idx\_a] \leftarrow 0$    
+    \State $list\_dilalui[idx\_a] \leftarrow idx\_a$    
+    \State $idx\_lalui[idx\_a] \leftarrow idx\_lalui[idx\_a] + 1$
+    \State $idx\_now \leftarrow idx\_a$
+
+    \While{$idx\_now != int\_max$}
+        \State $is\_final[idx\_now] \leftarrow TRUE$
+        \For{$i=0$ \textbf{to} $n\_tanaman-1$}
+            \If{$!is\_final[i]$ \textbf{and} $graph[idx\_now][i] != int\_max$ \textbf{and} $jarak\_f[idx\_now] + graph[idx\_now][i] > jarak\_f[i]$}
+                \State $jarak\_f[i] \leftarrow jarak\_f[idx\_now] + graph[idx\_now][i]$
+                \State $idx\_lalui[i] \leftarrow idx\_lalui[idx\_now] + 1$
+            \EndIf
+
+            \For{$j = 0$ \textbf{to} $idx\_dilalui[i]-1$}
+                \If{$j = idx\_dilalui[i]-1$}
+                    \State $lsit\_dilalui[i][j] \leftarrow i$
+                \Else
+                    \State $list\_dilalui[i][j] \leftarrow list\_dilalui[idx\_now][j]$
+                \EndIf
+            \EndFor
+        \EndFor
+        \State $idx\_now \leftarrow idx\_process(n\_tanaman, jarak\_f, is\_final)$
+    \EndWhile
+\end{algorithmic}
+\end{algorithm}
+%%%%%%%%%% ================================= %%%%%%%%%%  
 
     Setelah data yang dibutuhkan dimasukkan, implementasi
     dari algoritma Dijkstra untuk pencarian rute terdekat adalah
@@ -312,3 +459,4 @@
     % 1. BibTeX untuk kutipan diperoleh dari google scholar
     % 2. Gambar dibuat dengan menggunakan draw.io dan inkscape
         % sebelum import sebagai pdf_latex, pilih object to path terlebih dahulu pada tab path  
+    % 3. [H] kita tambahkan agar posisinya tetap relatif terhadap posisinya di sourcecode
