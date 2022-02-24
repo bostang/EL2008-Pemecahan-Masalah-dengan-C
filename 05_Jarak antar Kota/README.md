@@ -7,10 +7,9 @@ modifikasi sehingga program bisa menghitung jarak minimum antar kota dari graf b
 
 ![gambar graf](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/graf_jarak.png)
 
-Program digunakan untuk menyimulasikan algoritma dijkstra yang digunakan pada pemetaan tanaman di kebun raya purwodadi.
 Program menerima 4 input, yaitu:
-1. **nama file daftar kota**. File ini berisi daftar nama tanaman yang berada di kebun raya purwodadi. Seluruh tanaman diasumsikan berbeda.
-2. **nama file jarak antar kota**. File ini berisi jarak setiap pohonnya yang disusun dalam bentuk matriks segitiga bawah kiri. -1 melambangkan vertex yang tidak terhubung.
+1. **nama file daftar kota**. File ini berisi daftar kota pada graph di atas.
+2. **nama file jarak antar kota**. File ini berisi jarak setiap kota yang disusun dalam bentuk matriks segitiga bawah kiri. -1 melambangkan vertex yang tidak terhubung.
 3. **titik awal**.
 4. **titik tujuan**.
 5. **validasi pencarian**.
@@ -22,7 +21,7 @@ Program mengeluarkan output berupa daftar nama kota yang harus dilalui serta jar
 Pertama-tama saya mau berkomentar bahwa [sourcecode](https://github.com/ReynaldoAverill/Tugas7PMC/blob/main/Tugas7kel5.c) masih bisa dibuat lebih bersih lagi. **bagiamana??**
 
 1. Terdapat sebuah fungsi yang didefinisikan tetapi tidak pernah dipanggil, yaitu `printgraph()`
-2. pointer ke file `fp_jarak_tanaman` dan `fp_tanaman` tidak ditutup setelah diakses
+2. pointer ke file `fp_jarak_kota` dan `fp_kota` tidak ditutup setelah diakses
 3. terdapat bagian kode yang di-comment untuk di-non-aktifkan sementara $\rightarrow$ seharusnya dihapus bila sudah merupakan *sourcecode* final
 4. Penggunaan tanda kurung `{` yang kurang simetris dengan tutup kurung `}`. Misalkan:
 ```
