@@ -5,7 +5,7 @@
 Berdasarkan *sourcecode* pada [link berikut](https://github.com/ReynaldoAverill/Tugas7PMC),
 modifikasi sehingga program bisa menghitung jarak minimum antar kota dari graf berikut:
 
-![gambar graf](/dll_README/graf_jarak.png)
+![gambar graf](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/graf_jarak.png)
 
 Program digunakan untuk menyimulasikan algoritma dijkstra yang digunakan pada pemetaan tanaman di kebun raya purwodadi.
 Program menerima 4 input, yaitu:
@@ -114,37 +114,37 @@ Setelah informasi kota dan jarak antar kota sudah berhasil kita simpan dalam arr
 Berikut saya akan jabarkan cara saya menyalin data jarak dari graf ke dalam bentuk adjacency matrix: 
 
 1. Dari graf di awal, catat nama-nama kota yang ada pada excel. Setelah itu urutkan dengan fitur **sort** pada excel. 
-![langkah_1](/dll_README/01_mengurutkan.png)
+![langkah_1](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/01_mengurutkan.png)
 
 2. lalu salin secara transpos agar seolah-olah terbentuk tabel
-![langkah_2](/dll_README/02_pasteTranspose.png)
+![langkah_2](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/02_pasteTranspose.png)
 
 3. karena kebanyakan kota tidak saling terhubung, maka lebih baik kita isi semua kolom dengan -1 terlebih dahulu.
-![langkah_3](/dll_README/03_minus_satu_semua.png)
+![langkah_3](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/03_minus_satu_semua.png)
 
 4. kemudian ubah diagonal utama menjadi nol semua.
-![langkah_4](/dll_README/04_nol_diagonal.png)
+![langkah_4](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/04_nol_diagonal.png)
 
 5. hapus separuh diagonal bagian atas
-![langkah_5](/dll_README/05_sorot_diagonal_atas.png)
+![langkah_5](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/05_sorot_diagonal_atas.png)
 
 6. setelah itu mulai lakukan pengisian dengan melihat kota apa aja yang adjacent dengan satu kota. Misalkan kita mau mengisi dari kota bandung
-![langkah_6](/dll_README/06_contoh_pengisian_bandung.png)
+![langkah_6](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/06_contoh_pengisian_bandung.png)
 
-![graph_bandung](/dll_README/07_pengisian_bandung.png)
+![graph_bandung](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/07_pengisian_bandung.png)
 
 7. lalu lakukan untuk semua kota lain per kolom ke arah kanan. maka hasilnya seperti ini
-![adjacency_matrix_lengkap](/dll_README/08_verifikasi_jumlah_verteks.png)
+![adjacency_matrix_lengkap](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/08_verifikasi_jumlah_verteks.png)
 
 8. setelah selesai mengisi, kita bisa verifikasi dengan jumlah *edge* pada graph sebanyak 31.
 9. salin hasil pengukuran ke notepad / text editor
-![langkah_9](/dll_README/09_salin_ke_notepad.png)
+![langkah_9](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/09_salin_ke_notepad.png)
 
 10. replace setiap tab dengan spasi lalu hapus following tab di akhir setiap baris. Langkah ini sangat penting karena cara kita menggunakan strtok()
-![langkah_10](/dll_README/10_bersihkan_dengan_VSCode.png)
+![langkah_10](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/10_bersihkan_dengan_VSCode.png)
 
 11. Kita sudah selesai dengan pengolahan data kita. Selanjutnya, kita hanya perlu modifikasi `pesan-pesan interaktif` pada program dan mengganti konteks dari jarak antar tanaman menjadi jarak antar kota.
 
 12. Misalkan daftar kota ada dalam file bernama `listkota.txt` dan data jarak antar kota ke dalam `jarakantarkota.txt`. Maka berikut adalah demonstrasi program kita:
 
-![demo_program](/dll_README/demo_program.gif)
+![demo_program](https://github.com/bostang/ProblemSolving_C/blob/main/05_Jarak%20antar%20Kota/dll_README/demo_program.gif)
